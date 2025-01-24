@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image"; // Importar el componente Image
 
 interface Auto {
   _id: string;
@@ -13,7 +12,12 @@ interface Auto {
   imagen: string;
 }
 
-export default function AutoDetail({ params }: { params: { id: string } }) {
+// Asegúrate de que params es el tipo correcto.
+export default function AutoDetail({
+  params,
+}: {
+  params: Awaited<Promise<{ id: string }>>;
+}) {
   const [auto, setAuto] = useState<Auto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -88,11 +92,9 @@ export default function AutoDetail({ params }: { params: { id: string } }) {
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Columna de la imagen */}
           <div>
-            <Image
+            <img
               src={auto.imagen}
               alt={`Imagen del auto ${auto.marca} en la región ${auto.region}`}
-              width={500} // Especificar el ancho
-              height={300} // Especificar el alto
               className="w-full h-full object-cover"
             />
           </div>
