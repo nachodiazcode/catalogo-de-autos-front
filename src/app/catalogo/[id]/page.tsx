@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Search from "../../components/Search"; // Importamos el componente
 
 interface Auto {
   _id: string;
@@ -14,25 +13,13 @@ interface Auto {
 export default async function AutoDetail({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const resolvedParams = await params;
-
-  const handleSearch = async (filters: Record<string, string>) => {
-    const query = new URLSearchParams(filters).toString();
-    const response = await fetch(`http://146.190.52.199:8080/api/autos?${query}`);
-
-    if (response.ok) {
-      const autos: Auto[] = await response.json();
-      console.log("Resultados:", autos);
-    } else {
-      console.error("Error al filtrar los autos");
-    }
-  };
+  const { id } = params; // Extraemos el ID desde los parámetros de la URL
 
   try {
     const response = await fetch(
-      `http://146.190.52.199:8080/api/autos/detalle/${resolvedParams.id}`
+      `http://146.190.52.199:8080/api/autos/detalle/${id}`
     );
 
     if (!response.ok) {
@@ -43,9 +30,6 @@ export default async function AutoDetail({
 
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
-        {/* Usamos el componente de búsqueda */}
-        <Search onSearch={handleSearch} />
-
         <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div>

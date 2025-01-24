@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react";
 
 interface SearchProps {
@@ -20,7 +18,7 @@ export default function Search({ onSearch }: SearchProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(filters); // Enviamos los filtros al componente padre
+    onSearch(filters);
   };
 
   return (
@@ -28,7 +26,7 @@ export default function Search({ onSearch }: SearchProps) {
       onSubmit={handleSubmit}
       className="p-4 bg-white rounded-lg shadow-md flex flex-wrap gap-4"
     >
-      {/* Marca */}
+      {/* Campos de entrada */}
       <div className="flex flex-col">
         <label htmlFor="marca" className="text-gray-700 font-medium">
           Marca
@@ -43,8 +41,6 @@ export default function Search({ onSearch }: SearchProps) {
           className="border rounded-md p-2"
         />
       </div>
-
-      {/* Región */}
       <div className="flex flex-col">
         <label htmlFor="region" className="text-gray-700 font-medium">
           Región
@@ -59,8 +55,6 @@ export default function Search({ onSearch }: SearchProps) {
           className="border rounded-md p-2"
         />
       </div>
-
-      {/* Tipo de carrocería */}
       <div className="flex flex-col">
         <label htmlFor="tipoCarroceria" className="text-gray-700 font-medium">
           Tipo de Carrocería
@@ -75,8 +69,6 @@ export default function Search({ onSearch }: SearchProps) {
           className="border rounded-md p-2"
         />
       </div>
-
-      {/* Precio máximo */}
       <div className="flex flex-col">
         <label htmlFor="precioMax" className="text-gray-700 font-medium">
           Precio Máximo
@@ -91,8 +83,6 @@ export default function Search({ onSearch }: SearchProps) {
           className="border rounded-md p-2"
         />
       </div>
-
-      {/* Botón de búsqueda */}
       <div className="flex items-end">
         <button
           type="submit"
