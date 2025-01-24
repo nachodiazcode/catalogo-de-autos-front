@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image"; // Importamos Image
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface Auto {
@@ -13,11 +13,7 @@ interface Auto {
   imagen: string;
 }
 
-export default function AutoDetail({
-  params,
-}: {
-  params: Awaited<Promise<{ id: string }>>;
-}) {
+export default function AutoDetail({ params }: { params: { id: string } }) {
   const [auto, setAuto] = useState<Auto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
