@@ -1,28 +1,34 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "target": "ESNext",
-    "moduleResolution": "node",
-    "lib": ["dom", "esnext"],
-    "types": ["node"],
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "allowJs": true,                // Permitir archivos .js en el proyecto
+    "skipLibCheck": true,           // Omitir la verificación de tipos en archivos .d.ts
+    "strict": true,                 // Activar el modo estricto para un mejor control de tipos
+    "noEmit": true,                 // Evitar que TypeScript genere archivos .js
+    "esModuleInterop": true,        // Permitir importar módulos ES
+    "module": "ESNext",             // Usar módulos ESNext para compatibilidad moderna
+    "resolveJsonModule": true,      // Permitir la importación de archivos JSON
+    "isolatedModules": true,        // Asegurarse de que cada archivo sea un módulo independiente
+    "jsx": "preserve",              // Preservar JSX para que Next.js lo procese
+    "incremental": true,            // Habilitar compilación incremental para un rendimiento mejorado
+    "target": "ES2022",             // Usar ES2022 como objetivo para características modernas de JS
+    "moduleResolution": "node",     // Resolver módulos como Node.js
+    "lib": ["DOM", "ES2022"],       // Usar bibliotecas modernas (DOM + ES2022)
+    "types": ["node"],              // Incluir tipos de Node.js
+    "baseUrl": ".",                 // Establecer la base para las rutas relativas
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["src/*"]              // Alias para rutas relativas más limpias
+    },
+    "forceConsistentCasingInFileNames": true, // Asegurar consistencia en nombres de archivos
+    "strictNullChecks": true,       // Verificar null y undefined explícitamente
+    "noImplicitAny": true,          // Evitar el uso implícito de `any`
+    "noImplicitReturns": true,      // Asegurarse de que todas las funciones tengan un valor de retorno
+    "noUncheckedIndexedAccess": true // Hacer que los accesos indexados sean más estrictos
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",                // Incluir configuración de Next.js
+    "src/**/*.ts",                  // Incluir todos los archivos TypeScript en `src`
+    "src/**/*.tsx",                 // Incluir todos los archivos TSX en `src`
+    ".next/types/**/*.ts"           // Incluir tipos generados por Next.js
+  ],
+  "exclude": ["node_modules", "dist"] // Excluir dependencias y la carpeta de salida
 }
