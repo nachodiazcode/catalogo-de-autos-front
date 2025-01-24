@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image"; // Importamos Image
 import { useRouter } from "next/navigation";
 
 interface Auto {
@@ -12,7 +13,6 @@ interface Auto {
   imagen: string;
 }
 
-// Asegúrate de que params es el tipo correcto.
 export default function AutoDetail({
   params,
 }: {
@@ -92,9 +92,11 @@ export default function AutoDetail({
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Columna de la imagen */}
           <div>
-            <img
+            <Image
               src={auto.imagen}
               alt={`Imagen del auto ${auto.marca} en la región ${auto.region}`}
+              width={500}
+              height={300}
               className="w-full h-full object-cover"
             />
           </div>
