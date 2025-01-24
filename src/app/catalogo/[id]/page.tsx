@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import Search from "../components/Search"; // Importamos el componente
+import Search from "../../components/Search"; // Importamos el componente
 
 interface Auto {
   _id: string;
