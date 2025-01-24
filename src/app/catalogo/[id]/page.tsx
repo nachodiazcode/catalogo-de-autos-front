@@ -12,7 +12,7 @@ interface Auto {
   imagen: string;
 }
 
-export default function AutoDetailClient({ auto }: { auto: Auto }) {
+export default function AutoDetail({ auto }: { auto: Auto }) {
   const router = useRouter();
 
   return (
