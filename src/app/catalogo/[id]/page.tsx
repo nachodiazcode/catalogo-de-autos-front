@@ -13,11 +13,12 @@ interface Auto {
   imagen: string;
 }
 
-export default function AutoDetail({
+export default async function AutoDetail({
   params,
 }: {
-  params: { id: string }; // Usamos un tipo explícito aquí
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params; // Resolver `params` como promesa
   const [auto, setAuto] = useState<Auto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export default function AutoDetail({
     const fetchAuto = async () => {
       try {
         const response = await fetch(
-          `http://146.190.52.199:8080/api/autos/detalle/${params.id}`
+          `http://146.190.52.199:8080/api/autos/detalle/${id}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -43,13 +44,8 @@ export default function AutoDetail({
       }
     };
 
-    if (params?.id) {
-      fetchAuto();
-    } else {
-      setError("ID del auto no encontrado.");
-      setLoading(false);
-    }
-  }, [params.id]);
+    fetchAuto();
+  }, [id]);
 
   if (loading) {
     return (
