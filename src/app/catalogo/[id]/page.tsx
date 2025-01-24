@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// Definición de la interfaz para los datos de un auto
 interface Auto {
   _id: string;
   marca: string;
@@ -10,28 +11,34 @@ interface Auto {
   imagen: string;
 }
 
+// Componente para la página de detalle del auto
 export default async function AutoDetail({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params; // Extraemos el ID desde los parámetros de la URL
+  // Resolvemos la promesa de `params` para obtener el ID
+  const resolvedParams = await params;
 
   try {
+    // Realizamos la solicitud al endpoint correcto para obtener los datos del auto
     const response = await fetch(
-      `http://146.190.52.199:8080/api/autos/detalle/${id}`
+      `http://146.190.52.199:8080/api/autos/detalle/${resolvedParams.id}`
     );
 
+    // Verificamos si la respuesta es exitosa
     if (!response.ok) {
       throw new Error("No se encontraron datos para este auto.");
     }
 
     const auto: Auto = await response.json();
 
+    // Renderizamos la página con los datos del auto
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
-        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden mt-6">
+        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Columna de la imagen */}
             <div>
               <Image
                 src={auto.imagen}
@@ -41,6 +48,7 @@ export default async function AutoDetail({
                 className="w-full h-full object-cover"
               />
             </div>
+            {/* Columna de los detalles */}
             <div className="p-8 flex flex-col justify-center">
               <h1 className="text-4xl font-bold text-gray-900 mb-6">
                 {auto.marca}
@@ -57,6 +65,7 @@ export default async function AutoDetail({
             </div>
           </div>
         </div>
+        {/* Botón para volver al catálogo */}
         <div className="text-center mt-6">
           <Link
             href="/catalogo"
@@ -70,6 +79,7 @@ export default async function AutoDetail({
   } catch (error) {
     console.error("Error cargando los datos del auto:", error);
 
+    // Renderizamos una página de error amigable
     return (
       <main className="min-h-screen flex items-center justify-center text-center">
         <div>
@@ -88,5 +98,29 @@ export default async function AutoDetail({
         </div>
       </main>
     );
+  }
+}
+
+// Generar las rutas estáticas para el catálogo
+export async function generateStaticParams() {
+  try {
+    const response = await fetch("http://146.190.52.199:8080/api/autos");
+
+    // Verificamos si la respuesta es exitosa
+    if (!response.ok) {
+      throw new Error("Error al obtener la lista de autos.");
+    }
+
+    const autos: Auto[] = await response.json();
+
+    // Mapeamos los autos para generar las rutas dinámicas
+    return autos.map((auto) => ({
+      id: auto._id,
+    }));
+  } catch (error) {
+    console.error("Error generando rutas estáticas:", error);
+
+    // Si ocurre un error, no generamos rutas
+    return [];
   }
 }
