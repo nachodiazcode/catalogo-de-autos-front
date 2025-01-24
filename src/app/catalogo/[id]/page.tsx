@@ -1,7 +1,5 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Auto {
   _id: string;
@@ -12,8 +10,15 @@ interface Auto {
   imagen: string;
 }
 
-export default function AutoDetail({ auto }: { auto: Auto }) {
-  const router = useRouter();
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function AutoDetail({ params }: PageProps) {
+  // You should implement this function to fetch the auto data using the ID
+  const auto: Auto = await fetch(`YOUR_API_URL/autos/${params.id}`).then(res => res.json());
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
@@ -46,12 +51,12 @@ export default function AutoDetail({ auto }: { auto: Auto }) {
       </div>
       {/* Botón de regreso */}
       <div className="text-center mt-6">
-        <button
-          onClick={() => router.push("/catalogo")}
-          className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-lg hover:bg-purple-700 transition"
+        <Link
+          href="/catalogo"
+          className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-lg hover:bg-purple-700 transition inline-block"
         >
           Volver al catálogo
-        </button>
+        </Link>
       </div>
     </main>
   );
