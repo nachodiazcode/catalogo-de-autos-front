@@ -1,9 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  devIndicators: {
-    buildActivity: false, // Desactiva el indicador de actividad
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['146.190.52.199'], // Agrega tu dominio aquí
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
