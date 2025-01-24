@@ -15,19 +15,23 @@ interface Auto {
 export default function AutoDetail({ params }: { params: { id: string } }) {
   const [auto, setAuto] = useState<Auto | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchAuto = async () => {
       try {
-        const response = await fetch(`http://146.190.52.199:8080/api/autos/detalle/${params.id}`);
+        const response = await fetch(
+          `http://146.190.52.199:8080/api/autos/detalle/${params.id}`
+        );
         if (response.ok) {
           const data = await response.json();
           setAuto(data);
         } else {
-          console.error("Error al obtener los detalles del auto");
+          setError("No se pudo obtener los detalles del auto.");
         }
       } catch (error) {
+        setError("Error al conectar con la API.");
         console.error("Error al conectar con la API:", error);
       } finally {
         setLoading(false);
@@ -41,6 +45,22 @@ export default function AutoDetail({ params }: { params: { id: string } }) {
     return (
       <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 text-gray-800">
         <p className="text-xl font-semibold">Cargando detalles del auto...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 text-gray-800">
+        <div className="text-center">
+          <p className="text-xl font-semibold text-red-600">{error}</p>
+          <button
+            onClick={() => router.push("/catalogo")}
+            className="mt-4 px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-lg hover:bg-purple-700 transition"
+          >
+            Volver al catálogo
+          </button>
+        </div>
       </main>
     );
   }
@@ -69,7 +89,7 @@ export default function AutoDetail({ params }: { params: { id: string } }) {
           <div>
             <img
               src={auto.imagen}
-              alt={`Imagen de ${auto.marca}`}
+              alt={`Imagen del auto ${auto.marca} en la región ${auto.region}`}
               className="w-full h-full object-cover"
             />
           </div>
