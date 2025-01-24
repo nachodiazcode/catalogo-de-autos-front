@@ -10,7 +10,11 @@ interface Auto {
   imagen: string;
 }
 
-export default async function AutoDetail({ params }: { params: { id: unknown } }) {
+export default async function AutoDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
   // Replace this URL with your actual API endpoint
   const response = await fetch(`http://your-api/autos/${params.id}`);
   const auto: Auto = await response.json();
