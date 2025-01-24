@@ -17,13 +17,13 @@ export default async function AutoDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // Resolviendo la promesa de `params` para obtener el ID
+  // Resolvemos la promesa de `params` para obtener el ID
   const resolvedParams = await params;
 
   try {
-    // Realizamos la solicitud para obtener los datos del auto
+    // Realizamos la solicitud al endpoint correcto para obtener los datos del auto
     const response = await fetch(
-      `http://146.190.52.199:8080/api/autos/${resolvedParams.id}`
+      `http://146.190.52.199:8080/api/autos/detalle/${resolvedParams.id}`
     );
 
     // Verificamos si la respuesta es exitosa
