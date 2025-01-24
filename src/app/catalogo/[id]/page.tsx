@@ -1,10 +1,7 @@
-"use client"
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import Search from "../components/Search"; // Importamos el componente
 
-// Definición de la interfaz para los datos de un auto
 interface Auto {
   _id: string;
   marca: string;
@@ -14,13 +11,24 @@ interface Auto {
   imagen: string;
 }
 
-// Componente para la página de detalle del auto
 export default async function AutoDetail({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
+
+  const handleSearch = async (filters: Record<string, string>) => {
+    const query = new URLSearchParams(filters).toString();
+    const response = await fetch(`http://146.190.52.199:8080/api/autos?${query}`);
+
+    if (response.ok) {
+      const autos: Auto[] = await response.json();
+      console.log("Resultados:", autos);
+    } else {
+      console.error("Error al filtrar los autos");
+    }
+  };
 
   try {
     const response = await fetch(
@@ -35,7 +43,9 @@ export default async function AutoDetail({
 
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
-        <FiltroAutos />
+        {/* Usamos el componente de búsqueda */}
+        <Search onSearch={handleSearch} />
+
         <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div>
@@ -94,121 +104,5 @@ export default async function AutoDetail({
         </div>
       </main>
     );
-  }
-}
-
-// Componente para el buscador de filtros
-function FiltroAutos() {
-  const [filters, setFilters] = useState({
-    marca: "",
-    region: "",
-    tipoCarroceria: "",
-    precioMax: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const query = new URLSearchParams(filters).toString();
-    const response = await fetch(`http://146.190.52.199:8080/api/autos?${query}`);
-
-    if (response.ok) {
-      const autos: Auto[] = await response.json();
-      console.log("Resultados:", autos);
-    } else {
-      console.error("Error al filtrar los autos");
-    }
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="p-4 bg-white rounded-lg shadow-md flex flex-wrap gap-4"
-    >
-      <div className="flex flex-col">
-        <label htmlFor="marca" className="text-gray-700 font-medium">
-          Marca
-        </label>
-        <input
-          type="text"
-          id="marca"
-          name="marca"
-          value={filters.marca}
-          onChange={handleChange}
-          className="border rounded-md p-2"
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="region" className="text-gray-700 font-medium">
-          Región
-        </label>
-        <input
-          type="text"
-          id="region"
-          name="region"
-          value={filters.region}
-          onChange={handleChange}
-          className="border rounded-md p-2"
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="tipoCarroceria" className="text-gray-700 font-medium">
-          Tipo de Carrocería
-        </label>
-        <input
-          type="text"
-          id="tipoCarroceria"
-          name="tipoCarroceria"
-          value={filters.tipoCarroceria}
-          onChange={handleChange}
-          className="border rounded-md p-2"
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="precioMax" className="text-gray-700 font-medium">
-          Precio Máximo
-        </label>
-        <input
-          type="number"
-          id="precioMax"
-          name="precioMax"
-          value={filters.precioMax}
-          onChange={handleChange}
-          className="border rounded-md p-2"
-        />
-      </div>
-      <div className="flex items-end">
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
-        >
-          Buscar
-        </button>
-      </div>
-    </form>
-  );
-}
-
-// Generar las rutas estáticas para el catálogo
-export async function generateStaticParams() {
-  try {
-    const response = await fetch("http://146.190.52.199:8080/api/autos");
-
-    if (!response.ok) {
-      throw new Error("Error al obtener la lista de autos.");
-    }
-
-    const autos: Auto[] = await response.json();
-
-    return autos.map((auto) => ({
-      id: auto._id,
-    }));
-  } catch (error) {
-    console.error("Error generando rutas estáticas:", error);
-    return [];
   }
 }
