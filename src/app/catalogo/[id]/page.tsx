@@ -10,15 +10,10 @@ interface Auto {
   imagen: string;
 }
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function AutoDetail({ params }: PageProps) {
-  // You should implement this function to fetch the auto data using the ID
-  const auto: Auto = await fetch(`YOUR_API_URL/autos/${params.id}`).then(res => res.json());
+export default async function AutoDetail({ params }: { params: { id: string } }) {
+  // Replace this URL with your actual API endpoint
+  const response = await fetch(`http://your-api/autos/${params.id}`);
+  const auto: Auto = await response.json();
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
