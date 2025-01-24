@@ -16,7 +16,7 @@ interface Auto {
 export default function AutoDetail({
   params,
 }: {
-  params: Record<string, string>;
+  params: { id: string }; // Usamos un tipo explícito aquí
 }) {
   const [auto, setAuto] = useState<Auto | null>(null);
   const [loading, setLoading] = useState(true);
