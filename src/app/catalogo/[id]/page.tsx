@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Auto {
-  _id: string;
+  _id: any;
   marca: string;
   region: string;
   tipoCarroceria: string;
