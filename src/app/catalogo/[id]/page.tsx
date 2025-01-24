@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // Importar el componente Image
 
 interface Auto {
   _id: string;
@@ -87,9 +88,11 @@ export default function AutoDetail({ params }: { params: { id: string } }) {
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Columna de la imagen */}
           <div>
-            <img
+            <Image
               src={auto.imagen}
               alt={`Imagen del auto ${auto.marca} en la región ${auto.region}`}
+              width={500} // Especificar el ancho
+              height={300} // Especificar el alto
               className="w-full h-full object-cover"
             />
           </div>
