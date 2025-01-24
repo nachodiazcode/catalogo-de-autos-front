@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Auto {
-  _id: any;
+  _id: unknown;
   marca: string;
   region: string;
   tipoCarroceria: string;
@@ -10,7 +10,7 @@ interface Auto {
   imagen: string;
 }
 
-export default async function AutoDetail({ params }: { params: { id: any } }) {
+export default async function AutoDetail({ params }: { params: { id: unknown } }) {
   // Replace this URL with your actual API endpoint
   const response = await fetch(`http://your-api/autos/${params.id}`);
   const auto: Auto = await response.json();
