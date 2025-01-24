@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -13,7 +17,7 @@ export default function Home() {
             WebkitTextStroke: "1px transparent",
           }}
         >
-         Catálogo de Autos
+          Catálogo de Autos
         </h1>
 
         {/* Descripción */}
@@ -24,21 +28,18 @@ export default function Home() {
 
         {/* Botón con hover */}
         <div className="mt-8">
-          <a
+          <Link
             href="/catalogo"
             className="px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-full shadow-lg hover:from-blue-500 hover:to-purple-500 transition"
           >
             Ver Catálogo
-          </a>
+          </Link>
         </div>
       </div>
 
       {/* Footer */}
       <footer className="absolute bottom-4 text-gray-400 text-sm">
-        <p>
-          Creado con ❤️ para automovilistas
-         
-        </p>
+        <p>Creado con ❤️ para automovilistas</p>
       </footer>
     </main>
   );
