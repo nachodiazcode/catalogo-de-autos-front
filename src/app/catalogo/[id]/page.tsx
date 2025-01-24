@@ -13,7 +13,11 @@ interface Auto {
   imagen: string;
 }
 
-export default function AutoDetail({ params }: { params: { id: string } }) {
+export default function AutoDetail({
+  params,
+}: {
+  params: Record<string, string>;
+}) {
   const [auto, setAuto] = useState<Auto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +43,12 @@ export default function AutoDetail({ params }: { params: { id: string } }) {
       }
     };
 
-    fetchAuto();
+    if (params?.id) {
+      fetchAuto();
+    } else {
+      setError("ID del auto no encontrado.");
+      setLoading(false);
+    }
   }, [params.id]);
 
   if (loading) {
