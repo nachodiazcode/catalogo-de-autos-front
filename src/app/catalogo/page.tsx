@@ -16,7 +16,6 @@ export default function CatalogoClient({ autos }: { autos: Auto[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Manejo de filtros y envío del formulario
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
