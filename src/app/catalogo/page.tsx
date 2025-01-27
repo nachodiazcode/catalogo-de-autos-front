@@ -54,7 +54,7 @@ export default function Catalogo() {
  const handleSearch = (e: React.FormEvent) => {
   e.preventDefault();
   const query = Object.entries(filters)
-    .filter(([__, value]) => value)
+    .filter(([, value]) => value)
     .map(([key, value]) => `${key}=${encodeURIComponent(normalizeText(value))}`) // Normaliza valores
     .join("&");
   fetchAutos(query);
