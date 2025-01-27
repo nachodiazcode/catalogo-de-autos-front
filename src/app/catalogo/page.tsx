@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Auto {
   _id: string;
@@ -53,7 +54,7 @@ export default function Catalogo() {
  const handleSearch = (e: React.FormEvent) => {
   e.preventDefault();
   const query = Object.entries(filters)
-    .filter(([_, value]) => value)
+    .filter(([__, value]) => value)
     .map(([key, value]) => `${key}=${encodeURIComponent(normalizeText(value))}`) // Normaliza valores
     .join("&");
   fetchAutos(query);
@@ -132,7 +133,7 @@ export default function Catalogo() {
                 key={auto._id}
                 className="block bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow break-inside-avoid"
               >
-                <img
+                <Image
                   src={auto.imagen}
                   alt={`Imagen de ${auto.marca}`}
                   className="w-full object-cover"
