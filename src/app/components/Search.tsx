@@ -1,33 +1,42 @@
-import { useState } from "react";
+"use client";
+
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface SearchProps {
-  onSearch: (filters: Record<string, string>) => void;
+  onSearchComplete?: (query: URLSearchParams) => void; // Callback opcional
 }
 
-export default function Search({ onSearch }: SearchProps) {
-  const [filters, setFilters] = useState({
-    marca: "",
-    region: "",
-    tipoCarroceria: "",
-    precioMax: "",
-  });
+export default function Search({ onSearchComplete }: SearchProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  // Manejar el envío del formulario
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSearch(filters);
+
+    const formData = new FormData(e.currentTarget);
+    const filters = new URLSearchParams();
+
+    formData.forEach((value, key) => {
+      if (value) filters.append(key, value.toString());
+    });
+
+    // Redirigir con los nuevos filtros
+    router.push(`/catalogo?${filters.toString()}`);
+
+    // Ejecutar el callback si se proporciona
+    if (onSearchComplete) {
+      onSearchComplete(filters);
+    }
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="p-4 bg-white rounded-lg shadow-md flex flex-wrap gap-4"
+      onSubmit={handleSearch}
+      className="max-w-4xl mx-auto mb-6 p-4 bg-white rounded-lg shadow-md flex flex-wrap gap-4"
     >
-      {/* Campos de entrada */}
-      <div className="flex flex-col">
+      {/* Campo de Marca */}
+      <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="marca" className="text-gray-700 font-medium">
           Marca
         </label>
@@ -35,13 +44,14 @@ export default function Search({ onSearch }: SearchProps) {
           type="text"
           id="marca"
           name="marca"
-          value={filters.marca}
-          onChange={handleChange}
-          placeholder="Ej. Toyota"
+          defaultValue={searchParams.get("marca") || ""}
           className="border rounded-md p-2"
+          placeholder="Ej. Toyota"
         />
       </div>
-      <div className="flex flex-col">
+
+      {/* Campo de Región */}
+      <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="region" className="text-gray-700 font-medium">
           Región
         </label>
@@ -49,13 +59,14 @@ export default function Search({ onSearch }: SearchProps) {
           type="text"
           id="region"
           name="region"
-          value={filters.region}
-          onChange={handleChange}
-          placeholder="Ej. Metropolitana"
+          defaultValue={searchParams.get("region") || ""}
           className="border rounded-md p-2"
+          placeholder="Ej. Metropolitana"
         />
       </div>
-      <div className="flex flex-col">
+
+      {/* Campo de Tipo de Carrocería */}
+      <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="tipoCarroceria" className="text-gray-700 font-medium">
           Tipo de Carrocería
         </label>
@@ -63,13 +74,14 @@ export default function Search({ onSearch }: SearchProps) {
           type="text"
           id="tipoCarroceria"
           name="tipoCarroceria"
-          value={filters.tipoCarroceria}
-          onChange={handleChange}
-          placeholder="Ej. SUV"
+          defaultValue={searchParams.get("tipoCarroceria") || ""}
           className="border rounded-md p-2"
+          placeholder="Ej. SUV"
         />
       </div>
-      <div className="flex flex-col">
+
+      {/* Campo de Precio Máximo */}
+      <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="precioMax" className="text-gray-700 font-medium">
           Precio Máximo
         </label>
@@ -77,16 +89,17 @@ export default function Search({ onSearch }: SearchProps) {
           type="number"
           id="precioMax"
           name="precioMax"
-          value={filters.precioMax}
-          onChange={handleChange}
-          placeholder="Ej. 20000000"
+          defaultValue={searchParams.get("precioMax") || ""}
           className="border rounded-md p-2"
+          placeholder="Ej. 20000000"
         />
       </div>
-      <div className="flex items-end">
+
+      {/* Botón de Búsqueda */}
+      <div className="flex items-end w-full">
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-700 transition w-full"
         >
           Buscar
         </button>
