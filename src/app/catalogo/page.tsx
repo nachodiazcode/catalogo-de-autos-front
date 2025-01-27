@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 interface Auto {
   _id: string;
@@ -13,7 +14,7 @@ interface Auto {
 }
 
 interface CatalogoClientProps {
-  initialAutos: Auto[]; // Define el tipo de `initialAutos`
+  initialAutos: Auto[];
 }
 
 export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
@@ -49,7 +50,13 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {autos.map((auto) => (
             <div key={auto._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <img src={auto.imagen} alt={auto.marca} className="w-full h-48 object-cover" />
+              <Image
+                src={auto.imagen}
+                alt={`Imagen del auto ${auto.marca}`}
+                width={500}
+                height={300}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-4">
                 <h2 className="text-xl font-bold">{auto.marca}</h2>
                 <p>{auto.region}</p>
