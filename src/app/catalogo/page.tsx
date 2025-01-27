@@ -1,7 +1,4 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 interface Auto {
@@ -13,41 +10,120 @@ interface Auto {
   imagen: string;
 }
 
-export default function Catalogo() {
-  const [autos, setAutos] = useState<Auto[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function Catalogo() {
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchAutos = async () => {
-      try {
-        const response = await fetch("http://146.190.52.199:8080/api/autos");
-        if (response.ok) {
-          const data = await response.json();
-          setAutos(data);
-        } else {
-          console.error("Error al obtener los autos");
-        }
-      } catch (error) {
-        console.error("Error al conectar con la API:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Generar los query parameters para la API
+  const queryParams = new URLSearchParams();
 
-    fetchAutos();
-  }, []);
+  if (searchParams.get("marca")) queryParams.append("marca", searchParams.get("marca") || "");
+  if (searchParams.get("region")) queryParams.append("region", searchParams.get("region") || "");
+  if (searchParams.get("tipoCarroceria"))
+    queryParams.append("tipoCarroceria", searchParams.get("tipoCarroceria") || "");
+  if (searchParams.get("precioMax"))
+    queryParams.append("precioMax", searchParams.get("precioMax") || "");
 
-  if (loading) {
-    return (
-      <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 text-gray-800">
-        <p className="text-xl font-semibold">Cargando catálogo de autos...</p>
-      </main>
-    );
-  }
+  // Fetch de los autos basado en los filtros
+  const response = await fetch(
+    `http://146.190.52.199:8080/api/autos${queryParams.toString() ? `?${queryParams}` : ""}`,
+    {
+      cache: "no-store", // Evitar el cache para datos dinámicos
+    }
+  );
+
+  const autos: Auto[] = response.ok ? await response.json() : [];
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
+      {/* Buscador */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.currentTarget);
+          const filters = new URLSearchParams();
+
+          formData.forEach((value, key) => {
+            if (value) filters.append(key, value.toString());
+          });
+
+          router.push(`/catalogo?${filters.toString()}`);
+        }}
+        className="max-w-4xl mx-auto mb-6 p-4 bg-white rounded-lg shadow-md flex flex-wrap gap-4"
+      >
+        {/* Campo de Marca */}
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label htmlFor="marca" className="text-gray-700 font-medium">
+            Marca
+          </label>
+          <input
+            type="text"
+            id="marca"
+            name="marca"
+            defaultValue={searchParams.get("marca") || ""}
+            className="border rounded-md p-2"
+            placeholder="Ej. Toyota"
+          />
+        </div>
+
+        {/* Campo de Región */}
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label htmlFor="region" className="text-gray-700 font-medium">
+            Región
+          </label>
+          <input
+            type="text"
+            id="region"
+            name="region"
+            defaultValue={searchParams.get("region") || ""}
+            className="border rounded-md p-2"
+            placeholder="Ej. Metropolitana"
+          />
+        </div>
+
+        {/* Campo de Tipo de Carrocería */}
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label htmlFor="tipoCarroceria" className="text-gray-700 font-medium">
+            Tipo de Carrocería
+          </label>
+          <input
+            type="text"
+            id="tipoCarroceria"
+            name="tipoCarroceria"
+            defaultValue={searchParams.get("tipoCarroceria") || ""}
+            className="border rounded-md p-2"
+            placeholder="Ej. SUV"
+          />
+        </div>
+
+        {/* Campo de Precio Máximo */}
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label htmlFor="precioMax" className="text-gray-700 font-medium">
+            Precio Máximo
+          </label>
+          <input
+            type="number"
+            id="precioMax"
+            name="precioMax"
+            defaultValue={searchParams.get("precioMax") || ""}
+            className="border rounded-md p-2"
+            placeholder="Ej. 20000000"
+          />
+        </div>
+
+        {/* Botón de Búsqueda */}
+        <div className="flex items-end w-full">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-700 transition w-full"
+          >
+            Buscar
+          </button>
+        </div>
+      </form>
+
+      {/* Lista de autos */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {autos.map((auto) => (
           <div
