@@ -1,10 +1,9 @@
 "use client";
 
-import {  useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Search from "../components/Search";
-import router from "next/router";
 
 interface Auto {
   _id: string;
@@ -21,11 +20,13 @@ interface CatalogoClientProps {
 
 export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
   const [autos, setAutos] = useState(initialAutos);
+  const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAutos = async () => {
-      // Leer parámetros de búsqueda de la URL
+      // Construir query string desde los parámetros de búsqueda
       const queryParams = searchParams.toString();
 
       try {
@@ -33,14 +34,16 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
           `http://146.190.52.199:8080/api/autos${queryParams ? `?${queryParams}` : ""}`
         );
 
-        if (response.ok) {
-          const data = await response.json();
-          setAutos(data); // Actualizar la lista de autos
-        } else {
-          console.error("Error al obtener los autos filtrados");
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos de la API");
         }
-      } catch (error) {
-        console.error("Error de conexión:", error);
+
+        const data = await response.json();
+        setAutos(data); // Actualizar la lista de autos
+        setError(null); // Limpiar cualquier error previo
+      } catch (err) {
+        console.error("Error de conexión:", err);
+        setError("No se pudo cargar el catálogo de autos. Intenta nuevamente más tarde.");
       }
     };
 
@@ -51,6 +54,13 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
       {/* Buscador */}
       <Search />
+
+      {/* Mensaje de error */}
+      {error && (
+        <div className="max-w-4xl mx-auto bg-red-100 text-red-800 p-4 rounded-lg mb-6">
+          <p>{error}</p>
+        </div>
+      )}
 
       {/* Lista de autos */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -85,9 +95,11 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-600 col-span-full">
-            No se encontraron autos con los filtros seleccionados.
-          </p>
+          !error && ( // Mostrar este mensaje solo si no hay un error
+            <p className="text-center text-gray-600 col-span-full">
+              No se encontraron autos que coincidan con los filtros seleccionados.
+            </p>
+          )
         )}
       </div>
     </main>
