@@ -9,6 +9,7 @@ export default function Search() {
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Recolectar los valores del formulario
     const formData = new FormData(e.currentTarget);
     const filters = new URLSearchParams();
 
@@ -16,6 +17,7 @@ export default function Search() {
       if (value) filters.append(key, value.toString());
     });
 
+    // Redirigir a la URL con los filtros
     router.push(`/catalogo?${filters.toString()}`);
   };
 
@@ -37,6 +39,7 @@ export default function Search() {
           placeholder="Ej. Toyota"
         />
       </div>
+
       <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="region" className="text-gray-700 font-medium">
           Región
@@ -50,6 +53,7 @@ export default function Search() {
           placeholder="Ej. Metropolitana"
         />
       </div>
+
       <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="tipoCarroceria" className="text-gray-700 font-medium">
           Tipo de Carrocería
@@ -63,6 +67,7 @@ export default function Search() {
           placeholder="Ej. SUV"
         />
       </div>
+
       <div className="flex flex-col w-full sm:w-1/2">
         <label htmlFor="precioMax" className="text-gray-700 font-medium">
           Precio Máximo
@@ -76,6 +81,7 @@ export default function Search() {
           placeholder="Ej. 20000000"
         />
       </div>
+
       <div className="flex items-end w-full">
         <button
           type="submit"
