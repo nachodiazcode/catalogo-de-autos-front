@@ -45,7 +45,7 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {autos.map((auto) => (
           <div key={auto._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -65,6 +65,6 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
