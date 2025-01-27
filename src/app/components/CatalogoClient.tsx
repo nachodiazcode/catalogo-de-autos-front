@@ -26,26 +26,26 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
 
   useEffect(() => {
     const fetchAutos = async () => {
-      // Construir query string desde los parámetros de búsqueda
-      const queryParams = searchParams.toString();
-
-      try {
-        const response = await fetch(
-          `http://146.190.52.199:8080/api/autos${queryParams ? `?${queryParams}` : ""}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos de la API");
+        const queryParams = searchParams.toString();
+      
+        try {
+          const response = await fetch(
+            `http://146.190.52.199:8080/api/autos${queryParams ? `?${queryParams}` : ""}`
+          );
+      
+          if (!response.ok) {
+            throw new Error("Error al obtener los datos de la API");
+          }
+      
+          const data = await response.json();
+          console.log("Datos obtenidos:", data); // <-- Registra los datos en la consola
+          setAutos(data);
+          setError(null);
+        } catch (err) {
+          console.error("Error de conexión:", err);
+          setError("No se pudo cargar el catálogo de autos. Intenta nuevamente más tarde.");
         }
-
-        const data = await response.json();
-        setAutos(data); // Actualizar la lista de autos
-        setError(null); // Limpiar cualquier error previo
-      } catch (err) {
-        console.error("Error de conexión:", err);
-        setError("No se pudo cargar el catálogo de autos. Intenta nuevamente más tarde.");
-      }
-    };
+      };
 
     fetchAutos();
   }, [searchParams]); // Ejecutar cada vez que cambien los parámetros de búsqueda
