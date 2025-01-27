@@ -51,14 +51,14 @@ export default function Catalogo() {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
- const handleSearch = (e: React.FormEvent) => {
-  e.preventDefault();
-  const query = Object.entries(filters)
-    .filter(([, value]) => value)
-    .map(([key, value]) => `${key}=${encodeURIComponent(normalizeText(value))}`) // Normaliza valores
-    .join("&");
-  fetchAutos(query);
-};
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const query = Object.entries(filters)
+      .filter(([, value]) => value)
+      .map(([key, value]) => `${key}=${encodeURIComponent(normalizeText(value))}`) // Normaliza valores
+      .join("&");
+    fetchAutos(query);
+  };
 
   if (loading) {
     return (
@@ -74,7 +74,7 @@ export default function Catalogo() {
         <h1 className="text-5xl font-extrabold text-center text-white mb-6">
           Catálogo de Autos
         </h1>
-        
+
         <form onSubmit={handleSearch} className="mb-8 flex flex-wrap items-center gap-4">
           <input
             type="text"
@@ -82,7 +82,7 @@ export default function Catalogo() {
             placeholder="Marca"
             value={filters.marca}
             onChange={handleFilterChange}
-            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400"
+            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400 focus:text-blue-900"
           />
           <input
             type="text"
@@ -90,13 +90,13 @@ export default function Catalogo() {
             placeholder="Región"
             value={filters.region}
             onChange={handleFilterChange}
-            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400"
+            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400 focus:text-blue-900"
           />
           <select
             name="tipoCarroceria"
             value={filters.tipoCarroceria}
             onChange={handleFilterChange}
-            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400"
+            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400 focus:text-blue-900"
           >
             <option value="">Tipo de Carrocería</option>
             <option value="SUV">SUV</option>
@@ -114,7 +114,7 @@ export default function Catalogo() {
             placeholder="Precio máximo"
             value={filters.precio}
             onChange={handleFilterChange}
-            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400"
+            className="flex-1 p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-400 focus:text-blue-900"
             min="0"
           />
           <button
