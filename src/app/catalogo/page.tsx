@@ -33,7 +33,7 @@ export default function Catalogo() {
   const fetchAutos = async (query = "") => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/autos/buscar?${query}`);
+      const response = await fetch(`http://146.190.52.199:8080/api/autos/buscar?${query}`);
       const data = await response.json();
       setAutos(data);
     } catch (error) {
