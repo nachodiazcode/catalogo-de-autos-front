@@ -7,17 +7,17 @@ export default function Search() {
   const searchParams = useSearchParams();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault(); // Evitar el envío predeterminado del formulario
 
-    // Recolectar los valores del formulario
     const formData = new FormData(e.currentTarget);
     const filters = new URLSearchParams();
 
+    // Recolectar los valores de los campos del formulario
     formData.forEach((value, key) => {
       if (value) filters.append(key, value.toString());
     });
 
-    // Redirigir a la URL con los filtros
+    // Redirigir a la página de catálogo con los parámetros de búsqueda
     router.push(`/catalogo?${filters.toString()}`);
   };
 
