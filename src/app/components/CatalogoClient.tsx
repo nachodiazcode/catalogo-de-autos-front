@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
@@ -45,7 +45,7 @@ export default function CatalogoClient({ initialAutos }: CatalogoClientProps) {
   }, [searchParams]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 text-gray-800">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {autos.map((auto) => (
           <div key={auto._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
